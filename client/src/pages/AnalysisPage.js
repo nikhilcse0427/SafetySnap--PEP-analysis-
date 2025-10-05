@@ -11,19 +11,19 @@ function AnalysisPage() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    const fetchAnalysis = async () => {
+      try {
+        const response = await axios.get(`/api/analyses/${id}`);
+        setAnalysis(response.data.data);
+        setLoading(false);
+      } catch (err) {
+        setError('Failed to load analysis');
+        setLoading(false);
+      }
+    };
+    
     fetchAnalysis();
   }, [id]);
-
-  const fetchAnalysis = async () => {
-    try {
-      const response = await axios.get(`/api/analyses/${id}`);
-      setAnalysis(response.data.data);
-      setLoading(false);
-    } catch (err) {
-      setError('Failed to load analysis');
-      setLoading(false);
-    }
-  };
 
   if (loading) {
     return (
