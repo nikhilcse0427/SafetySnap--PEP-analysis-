@@ -14,10 +14,11 @@ function DashboardPage() {
 
   const fetchData = async () => {
     setLoading(true);
+    const API_URL = process.env.REACT_APP_API_URL || '';
     try {
       const [analysesRes, statsRes] = await Promise.all([
-        axios.get('/api/analyses'),
-        axios.get('/api/analyses/stats/summary')
+        axios.get(`${API_URL}/api/analyses`),
+        axios.get(`${API_URL}/api/analyses/stats/summary`)
       ]);
 
       setAnalyses(analysesRes.data.data);
@@ -32,8 +33,9 @@ function DashboardPage() {
   const handleDelete = async (id) => {
     if (!window.confirm('Are you sure you want to delete this analysis?')) return;
 
+    const API_URL = process.env.REACT_APP_API_URL || '';
     try {
-      await axios.delete(`/api/analyses/${id}`);
+      await axios.delete(`${API_URL}/api/analyses/${id}`);
       fetchData();
     } catch (err) {
       alert('Failed to delete analysis');
@@ -170,7 +172,7 @@ function DashboardPage() {
                 }}
               >
                 <img
-                  src={`http://localhost:5000${analysis.imageUrl}`}
+                  src={`${process.env.REACT_APP_API_URL || ''}${analysis.imageUrl}`}
                   alt="Analysis"
                   style={{
                     width: '140px',

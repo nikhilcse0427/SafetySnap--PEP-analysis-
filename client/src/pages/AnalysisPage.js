@@ -12,8 +12,9 @@ function AnalysisPage() {
 
   useEffect(() => {
     const fetchAnalysis = async () => {
+      const API_URL = process.env.REACT_APP_API_URL || '';
       try {
-        const response = await axios.get(`/api/analyses/${id}`);
+        const response = await axios.get(`${API_URL}/api/analyses/${id}`);
         setAnalysis(response.data.data);
         setLoading(false);
       } catch (err) {
@@ -61,7 +62,7 @@ function AnalysisPage() {
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px' }}>
           <div>
             <img
-              src={`http://localhost:5000${analysis.imageUrl}`}
+              src={`${process.env.REACT_APP_API_URL || ''}${analysis.imageUrl}`}
               alt="Analysis"
               style={{ width: '100%', borderRadius: '8px', border: '1px solid #e5e7eb' }}
             />
