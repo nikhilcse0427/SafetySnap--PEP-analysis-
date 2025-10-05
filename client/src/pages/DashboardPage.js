@@ -181,13 +181,27 @@ function DashboardPage() {
                   }}
                 />
                 <div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '10px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '10px', flexWrap: 'wrap' }}>
                     <span className={getStatusBadge(analysis.status)}>
                       {analysis.status}
                     </span>
                     <span style={{ fontSize: '15px', color: '#aaa', fontWeight: '600' }}>
                       Score: <span style={{ color: '#fff' }}>{analysis.complianceScore}%</span>
                     </span>
+                    {analysis.domain && (
+                      <span style={{
+                        padding: '4px 12px',
+                        background: 'rgba(102, 126, 234, 0.2)',
+                        border: '1px solid rgba(102, 126, 234, 0.3)',
+                        borderRadius: '12px',
+                        fontSize: '11px',
+                        color: '#667eea',
+                        fontWeight: '700',
+                        textTransform: 'uppercase'
+                      }}>
+                        {analysis.domain.replace('-', ' ')}
+                      </span>
+                    )}
                   </div>
                   <p style={{ fontSize: '13px', color: '#666' }}>
                     📅 {new Date(analysis.createdAt).toLocaleString()}

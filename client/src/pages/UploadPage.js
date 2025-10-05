@@ -110,6 +110,58 @@ function UploadPage() {
             </div>
           </div>
 
+          {/* Domain Selection */}
+          <div style={{ marginBottom: '32px' }}>
+            <h3 style={{ fontSize: '18px', fontWeight: '700', marginBottom: '16px', color: '#ffffff', textAlign: 'center' }}>
+              Select Industry Domain
+            </h3>
+            <div style={{ 
+              display: 'grid', 
+              gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', 
+              gap: '12px' 
+            }}>
+              {domains.map((domain) => (
+                <button
+                  key={domain.value}
+                  onClick={() => setSelectedDomain(domain.value)}
+                  style={{
+                    padding: '16px',
+                    background: selectedDomain === domain.value 
+                      ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' 
+                      : 'rgba(255, 255, 255, 0.05)',
+                    border: selectedDomain === domain.value 
+                      ? '2px solid rgba(102, 126, 234, 0.6)' 
+                      : '1px solid rgba(255, 255, 255, 0.1)',
+                    borderRadius: '12px',
+                    cursor: 'pointer',
+                    transition: 'all 0.3s',
+                    textAlign: 'left'
+                  }}
+                  onMouseEnter={(e) => {
+                    if (selectedDomain !== domain.value) {
+                      e.currentTarget.style.background = 'rgba(255, 255, 255, 0.08)';
+                      e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (selectedDomain !== domain.value) {
+                      e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
+                      e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+                    }
+                  }}
+                >
+                  <div style={{ fontSize: '24px', marginBottom: '8px' }}>{domain.icon}</div>
+                  <div style={{ fontSize: '14px', fontWeight: '700', color: '#ffffff', marginBottom: '4px' }}>
+                    {domain.label.replace(/[^\w\s]/g, '')}
+                  </div>
+                  <div style={{ fontSize: '11px', color: '#888', lineHeight: '1.4' }}>
+                    {domain.desc}
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
+
           {/* Upload Area */}
           {!preview && (
             <div
@@ -244,9 +296,48 @@ function UploadPage() {
                     <h3 style={{ fontSize: '24px', fontWeight: '800', color: '#ffffff', marginBottom: '4px' }}>
                       {result.status === 'compliant' ? 'Compliant ✓' : result.status === 'partial' ? 'Partially Compliant' : 'Non-Compliant ✗'}
                     </h3>
-                    <p style={{ color: '#aaa', fontSize: '16px' }}>Compliance Score: <span style={{ fontWeight: '700', color: '#fff' }}>{result.complianceScore}%</span></p>
+                    <p style={{ color: '#aaa', fontSize: '16px' }}>
+                      Compliance Score: <span style={{ fontWeight: '700', color: '#fff' }}>{result.complianceScore}%</span>
+                    </p>
+                    {result.domain && (
+                      <p style={{ color: '#888', fontSize: '13px', marginTop: '4px' }}>
+                        Domain: <span style={{ color: '#667eea', fontWeight: '600', textTransform: 'capitalize' }}>
+                          {result.domain.replace('-', ' ')}
+                        </span>
+                      </p>
+                    )}
                   </div>
                 </div>
+
+                {result.requiredItems && (
+                  <div style={{ 
+                    background: 'rgba(102, 126, 234, 0.1)', 
+                    borderRadius: '12px', 
+                    padding: '16px', 
+                    marginBottom: '20px',
+                    border: '1px solid rgba(102, 126, 234, 0.3)' 
+                  }}>
+                    <p style={{ fontSize: '13px', color: '#aaa', marginBottom: '8px' }}>
+                      <strong style={{ color: '#fff' }}>Required for {result.domain?.replace('-', ' ').toUpperCase()}:</strong>
+                    </p>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                      {result.requiredItems.map((item) => (
+                        <span key={item} style={{
+                          padding: '6px 12px',
+                          background: 'rgba(102, 126, 234, 0.2)',
+                          border: '1px solid rgba(102, 126, 234, 0.4)',
+                          borderRadius: '16px',
+                          fontSize: '12px',
+                          color: '#fff',
+                          fontWeight: '600',
+                          textTransform: 'capitalize'
+                        }}>
+                          {item.replace(/([A-Z])/g, ' $1').trim()}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
 
                 <div style={{ background: 'rgba(0, 0, 0, 0.3)', borderRadius: '12px', padding: '24px', border: '1px solid rgba(255, 255, 255, 0.1)' }}>
                   <h4 style={{ fontWeight: '700', marginBottom: '16px', color: '#ffffff', fontSize: '16px' }}>PPE Equipment Detected:</h4>
